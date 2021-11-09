@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图形组合显示 -- globalCompositeOpeartion</title>
+    <script>
+        function draw() {
+            console.log('将要绘制canvas图形。。。。')
+            const canvas  = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            //首先就是加载所有的图片
+            const imgSourceArr = [
+                "https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/29/1725e93d0b71ce7f~tplv-t2oaga2asx-image.image",
+                "https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/29/1725e93d1b78677c~tplv-t2oaga2asx-image.image",
+            ];
+            let loadImgArr = [];
+            let flag = false;
+            
+            imgSourceArr.forEach((item, index) => {
+                let initArr = [];
+                const newImage = new Image();
+                newImage.onload =function() {
+                    next(newImage, index);
+                }
+                newImage.src = item;
+            });
+            console.log(111);
+            
+            function next(img, index) {
+                if(index === 0) {
+                    // 先在canvas上画上没有颜色的图片， 作为目标图像，将彩色图片作为canvas的背景    
+                    // source-over 表示源图像在目标图像的上方显示
+                    ctx.globalCompositeOperation = 'source-over'; 
+                    ctx.drawImage(img, 0,0,400,220); 
+                }
+                if(index === 1) {
+                    canvas.style.background = 'url(https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/29/1725e93d199be90d~tplv-t2oaga2asx-image.image)';
+                    canvas.style.backgroundSize = '100%, 100%';
+                    flag = true;
+                    canvas.onclick = diffusion(img);
+                }
+
+            }
+            
+            // 表示不规则图形的尺寸
+            let width = 0 ;
+            // 表示扩撒效果的速度
+            const speed = 8;
+
+            function diffusion(img) {
+               return (e) => {
+                   if(flag) {
+                       flag = false;
+                       // destination-out 这个表示只有源图像外显示目标图像， 源图像时透明的
+                       // 实现思路就是就目标图像图片逐渐扩大， 这样就可以实现目标
+                       ctx.globalCompositeOperation = 'destination-out';
+                       window.requestAnimationFrame(drawImg);
+    
+                       function drawImg() {
+                           
+                           if(width > 1000) {
+                               flag = false;
+                               return;
+                           }
+                           // 逐渐扩大源图形就是不规则图像的宽度    
+                           width += speed;
+                           // 获取鼠标关于canvas 的坐标 
+                           const x = e.layerX;
+                           const y = e.layerY;
+
+                           ctx.drawImage(img, x-(width/2), y-(width/2), width,width);
+                           window.requestAnimationFrame(drawImg);
+                       }
+                   };
+               }
+            }
+
+        }
+    </script>
+    <style>
+        canvas {
+            cursor: url('https://www.kkkk1000.com/images/globalCompositeOperation/mouse.png') , auto;
+        }
+    </style>
+</head>
+<body onload="draw()">
+    <h1>这是需要的图片展示</h1>
+    <img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/29/1725e93d0b71ce7f~tplv-t2oaga2asx-image.image" alt="">
+    <img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/29/1725e93d1b78677c~tplv-t2oaga2asx-image.image" alt="">
+    <h1>下面时水滴扩散动画</h1>
+   <canvas id="canvas" width="400px" height="220px"></canvas>
+</body>
+</html>
