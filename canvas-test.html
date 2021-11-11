@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面</title>
+    <script>
+        function draw() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.style.background = "url('https://www.kkkk1000.com/images/globalCompositeOperation/bg3.jpg') no-repeat center"
+
+            // ctx.fillStyle = "blue";
+            // ctx.fillRect(0,0, 400, 250);
+        }
+    </script>
+</head>
+<body onload="draw()">
+    <canvas id="canvas" width="400px" height="250px"></canvas>
+</body>
+</html>
