@@ -1,71 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>太阳系动画</title>
-    <script>
-        function draw() {
-            console.log(222);
-            // 初始化一些数据， 参数
-            let sun = new Image();
-            let moon = new Image();
-            let earth = new Image();
-            init();
+<meta charset="utf-8">
+<canvas id="canvas-1" width="300" height="300">
+</canvas>
+<script>
+var sun = new Image();
+var moon = new Image();
+var earth = new Image();
 
-            function init() {
-                sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
-                moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
-                earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
-                window.requestAnimationFrame(drawImage);
-                
-            }
-            
-            function drawImage() {
-                console.log(111);
-                const canvas = document.getElementById('canvas');
-                const ctx = canvas.getContext('2d');
-                
-                // draw sun
-                ctx.drawImage(sun,0,0,300,300);
-                ctx.save();
+var ctx = document.getElementById('canvas-1').getContext('2d');
 
-                // draw earth
-                var time = new Date();
-                // ctx.rotate( ((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds() );
-                // ctx.translate(105,0);
-                // ctx.fillRect(0,-12,50,24); // Shadow
-                ctx.globalCompositeOperation = "source-over";
-                ctx.translate(105,50)
-                ctx.rotate( ((2*Math.PI)/60)*time.getSeconds() );
-                ctx.drawImage(earth,-12,-12);
+function init(){
+    sun.src = 'https://www.twle.cn/static/i/canvas/canvas_animation_sun.png';
+    moon.src = 'https://www.twle.cn/static/i/canvas/canvas_animation_moon.png';
+    earth.src = 'https://www.twle.cn/static/i/canvas/canvas_animation_earth.png';
+    setInterval(function(){draw();},1000/60);
+}
 
-                // Moon
-                // ctx.save();
-                // ctx.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/6000)*time.getMilliseconds() );
-                // ctx.translate(0,28.5);
-                // ctx.drawImage(moon,-3.5,-3.5);
-                // ctx.restore();
+function draw() {
 
-                // ctx.restore();
+  ctx.globalCompositeOperation = 'destination-over';
+  ctx.clearRect(0,0,300,300); // clear canvas
 
-                // ctx.beginPath();
-                // ctx.arc(150,150,105,0,Math.PI*2,false); // Earth orbit
-                // ctx.stroke();
+  ctx.fillStyle = 'rgba(0,0,0,0.4)';
+  ctx.strokeStyle = 'rgba(0,153,255,0.4)';
+  ctx.save(); // save 的作用就是保存在状态，就是将当前画布复制一份放在栈中，没有restore的话，所有变换都还在一个画布上
+  ctx.translate(150,150); // 每一次重绘，首先将画布旋转到太阳的位置，
 
-                window.requestAnimationFrame(drawImage);
-            }
-            
-        }
-    </script>
-</head>
-<body onload="draw()">
-    <h1>以下是要用到的图片：</h1>
-    <img id="sun" src="https://mdn.mozillademos.org/files/1456/Canvas_sun.png" alt="">
-    <img id="moon" src="https://mdn.mozillademos.org/files/1443/Canvas_moon.png" alt="">
-    <img id="earth" src="https://mdn.mozillademos.org/files/1429/Canvas_earth.png" alt="">
-    <hr/>
-    <canvas id="canvas" width="300px" height="300px"></canvas>
-</body>
-</html>
+  // Earth
+  var time = new Date();
+  // 然后就是，以（150,150）， 为原点，根据时间旋转相应的弧度，   
+  ctx.rotate( ((2*Math.PI)/60)*time.getSeconds() + ((2*Math.PI)/60000)*time.getMilliseconds() );
+  // 旋转相应的弧度后，，整个画布，在旋转弧度的基础上，平移   
+  ctx.translate(105,0);
+  ctx.fillRect(0,-12,50,24); // Shadow
+  ctx.drawImage(earth,-12,-12);
+
+  // Moon
+  ctx.save();
+  ctx.rotate( ((2*Math.PI)/6)*time.getSeconds() + ((2*Math.PI)/6000)*time.getMilliseconds() );
+  ctx.translate(0,28.5);
+  ctx.drawImage(moon,-3.5,-3.5);
+  ctx.restore();
+
+  ctx.restore();
+
+  ctx.beginPath();
+  ctx.arc(150,150,105,0,Math.PI*2,false); // Earth orbit
+  ctx.stroke();
+
+  ctx.drawImage(sun,0,0,300,300);
+
+  window.requestAnimationFrame(draw);
+}
+
+init();
+</script>

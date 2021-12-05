@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<meta charset="utf-8"> 
+<canvas id="canvas-1" width="400" height="300">
+</canvas>
+<script>
+var c   = document.getElementById("canvas-1");
+var ctx = c.getContext("2d");
+ctx.save();
+ctx.translate(100,100);
+ctx.fillStyle = "green"
+ctx.fillRect(50,50,100,50);
+ctx.restore();
+ctx.fillRect(20,20,100,50);
+</script>

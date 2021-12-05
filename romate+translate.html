@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旋转之后，平移的实验效果</title>
+    <script>
+        function draw() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = 'red';
+            ctx.fillRect(0,0,50,50);
+            // ctx.save();
+            // ctx.rotate(Math.PI / 180);
+            // ctx.fillStyle = 'green';
+            // ctx.translate(150,150);
+            // ctx.fillRect(0,0,50,50);
+            // ctx.save();
+            ctx.rotate(15*Math.PI / 180);
+            ctx.fillStyle = 'gold';
+            ctx.translate(150,150);
+            ctx.fillRect(0,0,50,50);
+            // ctx.save();
+            ctx.rotate(30*Math.PI / 180);
+            ctx.fillStyle = 'gray';
+            ctx.translate(150,150);
+            ctx.fillRect(0,0,50,50);
+        }
+    </script>
+</head>
+<body onload="draw()">
+    <canvas id="canvas" width="300px", height="300px"></canvas>
+</body>
+</html>
